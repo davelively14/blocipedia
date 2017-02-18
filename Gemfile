@@ -19,6 +19,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'bootstrap'
 gem 'figaro'
+gem 'bootstrap-sass'
 
 group :development do
   gem 'web-console', '~> 2.0'
