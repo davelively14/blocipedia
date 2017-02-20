@@ -3,6 +3,9 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   let(:user) { create(:user) }
 
+  # Shoulda test for associations
+  it { is_expected.to have_many(:wikis) }
+
   # Shoulda test for emails
   it { is_expected.to validate_presence_of(:email) }
   it { is_expected.to validate_length_of(:email).is_at_least(3) }

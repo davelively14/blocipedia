@@ -19,7 +19,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'figaro'
 gem 'bootstrap-sass'
-gem 'devise'
+gem 'devise', '~> 4.1.0'
 
 group :development do
   gem 'web-console', '~> 2.0'
