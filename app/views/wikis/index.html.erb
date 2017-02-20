@@ -1,20 +1,23 @@
 <h2>All Wikis</h2>
+<%= link_to "New Wiki", new_wiki_path, class: 'btn btn-success btn-sm' %> 
 <div class="row">
-  <table class="table table-hover">
-    <thead>
-      <td width="70%"><h4>Wiki Title</h4></td>
-      <td width="30%"><h4>Actions</h4></td>
-    </thead>
-    <tbody>
-      <% @wikis.each do |wiki| %>
+  <div class="container">
+    <table class="table table-hover">
+      <thead>
+        <td width="70%"><h4>Wiki Title</h4></td>
+        <td width="30%"><h4>Actions</h4></td>
+      </thead>
+      <tbody>
+        <% @wikis.each do |wiki| %>
         <tr>
           <td><%= wiki.title %></td>
           <td>
-            <button class="btn btn-primary btn-xs">Edit</button>
+            <%= link_to "Edit", edit_wiki_path(wiki), class: 'btn btn-primary btn-xs' %>
             <button class="btn btn-danger btn-xs">Delete</button>
           </td>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>

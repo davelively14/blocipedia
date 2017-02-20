@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'rails_helper'
 
 RSpec.describe WikisController, type: :controller do
   let(:user) { create(:user) }
@@ -30,6 +31,12 @@ RSpec.describe WikisController, type: :controller do
     describe "POST create" do
       it "is not accessible to unregistered user" do
         expect{post :create, wiki: {title: Faker::Hacker.say_something_smart, body: Faker::Hipster.paragraph, private: false}}.to raise_error(UncaughtThrowError)
+      end
+    end
+
+    describe "GET edit" do
+      it "is not accessible to unregistered user" do
+        expect{get :edit, id: wiki.id}.to raise_error(UncaughtThrowError)
       end
     end
   end
@@ -103,6 +110,29 @@ RSpec.describe WikisController, type: :controller do
       it "redirects to the new wiki" do
         post :create, wiki: {title: Faker::Hacker.say_something_smart, body: Faker::Hipster.paragraph, private: false}
         expect(response).to redirect_to(Wiki.last)
+      end
+    end
+
+    describe "GET edit" do
+      it "returns http success" do
+        get :edit, id: wiki.id
+        expect(response).to have_http_status(:success)
+      end
+
+      it "renders the #edit view" do
+        get :edit, id: wiki.id
+        expect(response).to render_template(:edit)
+      end
+
+      it "assigns wiki to be udpated to @wiki" do
+        get :edit, id: wiki.id
+        wiki_instance = assigns(:wiki)
+
+        expect(wiki_instance.id).to eq(wiki.id)
+        expect(wiki_instance.title).to eq(wiki.title)
+        expect(wiki_instance.body).to eq(wiki.body)
+        expect(wiki_instance.private).to eq(wiki.private)
+        expect(wiki_instance.user_id).to eq(wiki.user_id)
       end
     end
   end
