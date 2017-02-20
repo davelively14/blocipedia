@@ -45,6 +45,12 @@ RSpec.describe WikisController, type: :controller do
         expect{put :update, id: wiki.id, wiki: {title: Faker::Hacker.say_something_smart, body: Faker::Hipster.paragraph, private: false}}.to raise_error(UncaughtThrowError)
       end
     end
+
+    describe "DELETE destroy" do
+      it "is not accessible to unregistered user" do
+        expect{delete :destroy, id: wiki.id}.to raise_error(UncaughtThrowError)
+      end
+    end
   end
 
   context "user" do
@@ -160,6 +166,18 @@ RSpec.describe WikisController, type: :controller do
       it "redirects to the updated wiki" do
         put :update, id: wiki.id, wiki: {title: Faker::Hacker.say_something_smart, body: Faker::Hipster.paragraph, private: false}
         expect(response).to redirect_to(wiki)
+      end
+    end
+
+    describe "DELETE destroy" do
+      it "deletes the wiki" do
+        delete :destroy, id: wiki.id
+        expect(Wiki.where({id: wiki.id}).size).to eq(0)
+      end
+
+      it "redirects to wiki#index" do
+        delete :destroy, id: wiki.id
+        expect(response).to redirect_to(wikis_path)
       end
     end
   end
