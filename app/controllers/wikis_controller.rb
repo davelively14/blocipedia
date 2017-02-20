@@ -14,7 +14,7 @@ class WikisController < ApplicationController
   end
 
   def create
-    @wiki = Wiki.new(post_params)
+    @wiki = Wiki.new(wiki_params)
     @wiki.user = current_user
 
     if @wiki.save
@@ -30,9 +30,22 @@ class WikisController < ApplicationController
     @wiki = Wiki.find(params[:id])
   end
 
+  def update
+    @wiki = Wiki.find(params[:id])
+    @wiki.assign_attributes(wiki_params)
+
+    if @wiki.save
+      flash[:notice] = "Wiki was updated."
+      redirect_to @wiki
+    else
+      flash.now[:alert] = "An error occured. The wiki was not updated."
+      render :edit
+    end
+  end
+
   private
 
-  def post_params
+  def wiki_params
     params.require(:wiki).permit(:title, :body, :private)
   end
 end

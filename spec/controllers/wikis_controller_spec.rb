@@ -39,6 +39,12 @@ RSpec.describe WikisController, type: :controller do
         expect{get :edit, id: wiki.id}.to raise_error(UncaughtThrowError)
       end
     end
+
+    describe "PUT update" do
+      it "is not accessible to unregistered user" do
+        expect{put :update, id: wiki.id, wiki: {title: Faker::Hacker.say_something_smart, body: Faker::Hipster.paragraph, private: false}}.to raise_error(UncaughtThrowError)
+      end
+    end
   end
 
   context "user" do
@@ -133,6 +139,27 @@ RSpec.describe WikisController, type: :controller do
         expect(wiki_instance.body).to eq(wiki.body)
         expect(wiki_instance.private).to eq(wiki.private)
         expect(wiki_instance.user_id).to eq(wiki.user_id)
+      end
+    end
+
+    describe "PUT update" do
+      it "updates wiki with expected attributes" do
+        new_title = Faker::Hacker.say_something_smart
+        new_body = Faker::Hipster.paragraph
+        new_private = false
+
+        put :update, id: wiki.id, wiki: {title: new_title, body: new_body, private: new_private}
+        updated_wiki = assigns(:wiki)
+
+        expect(updated_wiki.id).to eq(wiki.id)
+        expect(updated_wiki.title).to eq(new_title)
+        expect(updated_wiki.body).to eq(new_body)
+        expect(updated_wiki.private).to eq(new_private)
+      end
+
+      it "redirects to the updated wiki" do
+        put :update, id: wiki.id, wiki: {title: Faker::Hacker.say_something_smart, body: Faker::Hipster.paragraph, private: false}
+        expect(response).to redirect_to(wiki)
       end
     end
   end
