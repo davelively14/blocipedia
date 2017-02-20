@@ -24,7 +24,8 @@ User.create!(
   email: "dlively@resurgens.io",
   username: "dlively",
   password: "password",
-  password_confirmation: "password"
+  password_confirmation: "password",
+  role: :admin
 )
 
 puts "Seed complete"
