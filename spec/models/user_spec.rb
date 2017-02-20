@@ -40,4 +40,51 @@ RSpec.describe User, type: :model do
       expect(invalid_user_username).to_not be_valid
     end
   end
+
+  describe "roles" do
+    it "is standard by default" do
+      expect(user.role).to eq("standard")
+    end
+
+    context "standard" do
+      it "returns true for #standard?" do
+        expect(user.standard?).to be_truthy
+      end
+
+      it "returns false for #admin? or #premium?" do
+        expect(user.admin?).to be_falsey
+        expect(user.premium?).to be_falsey
+      end
+    end
+
+    context "premium" do
+      before do
+        user.premium!
+      end
+
+      it "returns true for #premium?" do
+        expect(user.premium?).to be_truthy
+      end
+
+      it "returns false for #admin? or #standard?" do
+        expect(user.admin?).to be_falsey
+        expect(user.standard?).to be_falsey
+      end
+    end
+
+    context "admin" do
+      before do
+        user.admin!
+      end
+
+      it "returns true for #admin?" do
+        expect(user.admin?).to be_truthy
+      end
+
+      it "returns false for #premium? or #standard?" do
+        expect(user.premium?).to be_falsey
+        expect(user.standard?).to be_falsey
+      end
+    end
+  end
 end

@@ -5,6 +5,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  before_save { self.role ||= :standard }
+
+  enum role: [:standard, :premium, :admin]
 
   validates :email, length: { minimum: 3 }
   validates :username, presence: true, length: { minimum: 1, maximum: 20 }, uniqueness: true
