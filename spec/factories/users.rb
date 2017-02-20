@@ -1,8 +1,9 @@
 FactoryGirl.define do
   pw = Faker::Internet.password
+  un = Faker::GameOfThrones.character.gsub(/\W/, "")
 
   factory :user do
-    username Faker::GameOfThrones.character.gsub(/\W/, "")
+    sequence(:username){|n| "#{un}#{n}"}
     sequence(:email){|n| "user#{n}@blocipedia.io"}
     password pw
     password_confirmation pw

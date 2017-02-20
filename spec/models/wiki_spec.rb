@@ -15,9 +15,6 @@ RSpec.describe Wiki, type: :model do
   it { is_expected.to validate_presence_of(:body) }
   it { is_expected.to validate_length_of(:body).is_at_least(20) }
 
-  # Shoulda tests for private
-  it { is_expected.to validate_presence_of(:private) }
-
   describe "attributes" do
     it "has title, body, private, and user attributes" do
       expect(wiki).to have_attributes(title: wiki.title, body: wiki.body, private: wiki.private, user: wiki.user)
