@@ -1,7 +1,32 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+5.times do
+  pw = Faker::Internet.password
+  un = Faker::GameOfThrones.character.gsub(/\W/, "")
+  User.create!(
+    username: un,
+    email: "#{un}@blocipedia.com",
+    password: pw,
+    password_confirmation: pw
+  )
+end
+
+users = User.all
+
+20.times do
+  Wiki.create!(
+    title: Faker::Hacker.say_something_smart,
+    body: Faker::Hipster.paragraph,
+    private: false,
+    user: users.sample
+  )
+end
+
+User.create!(
+  email: "dlively@resurgens.io",
+  username: "dlively",
+  password: "password",
+  password_confirmation: "password"
+)
+
+puts "Seed complete"
+puts "#{User.count} created"
+puts "#{Wiki.count} created"
