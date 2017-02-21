@@ -15,11 +15,17 @@ RSpec.describe ChargesController, type: :controller do
     end
 
     it "converts user to a standard status after downgrading" do
-      expect{delete :destroy, id: user.id}.to change{user.standard?}.from(false).to(true)
+      expect(user.premium?).to be_truthy
+      delete :destroy, id: user.id
+      user.reload
+      expect(user.standard?).to be_truthy
     end
 
     it "converts all private wikis to public when premium user downgrades" do
-      expect{delete :destroy, id: user.id}.to change{wiki.private}.from(true).to(false)
+      expect(wiki.private).to be_truthy
+      delete :destroy, id: user.id
+      wiki.reload
+      expect(wiki.private).to be_falsey
     end
   end
 end
