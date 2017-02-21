@@ -1,5 +1,15 @@
-<h2>All Wikis</h2>
-<%= link_to "New Wiki", new_wiki_path, class: 'btn btn-success btn-sm' %>
+<div class="row">
+  <div class="col-sm-4">
+    <h2>All Wikis</h2>
+    <%= link_to "New Wiki", new_wiki_path, class: 'btn btn-success btn-sm' %>
+  </div>
+  <% if current_user.standard? %>
+    <div class="col-sm-8 text-center">
+      <h4>Upgrade to Premium</h4>
+      <p class="lead"><small>Post privately today.</small></p>
+    </div>
+  <% end %>
+</div>
 <div class="row">
   <div class="container">
     <table class="table table-hover">
