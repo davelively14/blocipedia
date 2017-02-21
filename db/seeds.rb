@@ -29,8 +29,8 @@ User.create!(
 )
 
 User.create!(
-  email: "normal@resurgens.io",
-  username: "normal",
+  email: "standard@resurgens.io",
+  username: "standard",
   password: "password",
   password_confirmation: "password"
 )
