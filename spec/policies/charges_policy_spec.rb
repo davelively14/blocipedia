@@ -8,7 +8,7 @@ RSpec.describe ChargesPolicy do
   subject { described_class }
 
   permissions :destroy? do
-    it "allows users with premium or admin" do
+    it "allows users with premium" do
       expect(subject).to permit(premium)
     end
 
@@ -19,24 +19,24 @@ RSpec.describe ChargesPolicy do
   end
 
   permissions :create? do
-    it "allows users with premium or admin" do
-      expect(subject).to permit(premium)
+    it "allows users with standard" do
+      expect(subject).to permit(standard)
     end
 
     it "does not allow standard and admin users" do
       expect(subject).to_not permit(admin)
-      expect(subject).to_not permit(standard)
+      expect(subject).to_not permit(premium)
     end
   end
 
   permissions :new? do
-    it "allows users with premium or admin" do
-      expect(subject).to permit(premium)
+    it "allows users with standard" do
+      expect(subject).to permit(standard)
     end
 
     it "does not allow standard and admin users" do
       expect(subject).to_not permit(admin)
-      expect(subject).to_not permit(standard)
+      expect(subject).to_not permit(premium)
     end
   end
 end

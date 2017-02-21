@@ -1,10 +1,10 @@
 class ChargesPolicy < ApplicationPolicy
   def new?
-    user.present? ? user.premium? : false
+    user.present? ? user.standard? : false
   end
 
   def create?
-    user.present? ? user.premium? : false
+    user.present? ? user.standard? : false
   end
 
   def destroy?

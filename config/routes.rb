@@ -4,4 +4,5 @@ Rails.application.routes.draw do
 
   resources :wikis
   resources :charges, only: [:new, :create, :destroy]
+  resources :users, only: [:show]
 end

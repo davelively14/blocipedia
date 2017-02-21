@@ -9,11 +9,6 @@
       <p class="lead"><small>Post privately today.</small></p>
     </div>
   <% end %>
-  <% if current_user.premium? %>
-    <div class="col-sm-8 text-center">
-      <h4><%= link_to "Downgrade", charge_path(current_user), method: :delete %></h4>
-    </div>
-  <% end %>
 </div>
 <div class="row">
   <div class="container">
