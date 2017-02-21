@@ -29,5 +29,19 @@
         <p class="lead"><%= Faker::Hipster.sentence %></p>
       </div>
     </div>
+  <% else %>
+    <div class="row">
+      <div class="col-md-2"> </div>
+      <div class="col-md-8">
+        <div class="jumbotron">
+          <h3 class="text-center">Create and share Markdown Wikis</h3>
+          <br>
+          <br>
+          <div class="text-center">
+            <%= link_to "Go to Wikis", wikis_path, class: 'btn btn-primary btn-lg' %>
+          </div>
+        </div>
+      </div>
+    </div>
   <% end %>
 </div>
