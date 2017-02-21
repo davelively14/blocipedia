@@ -7,59 +7,7 @@ RSpec.describe WikisController, type: :controller do
   let(:wiki) { create(:wiki, user: user) }
   let(:other_wiki) { create(:wiki) }
 
-  context "guest" do
-    before do
-      sign_out user
-    end
-
-    describe "GET show" do
-      it "is not accessible to unregistered user" do
-        expect{get :show, {id: wiki.id}}.to raise_error(UncaughtThrowError)
-      end
-    end
-
-    describe "GET index" do
-      it "is not accessible to unregistered user" do
-        expect{get :index}.to raise_error(UncaughtThrowError)
-      end
-    end
-
-    describe "GET new" do
-      it "is not accessible to unregistered user" do
-        expect{get :new}.to raise_error(UncaughtThrowError)
-      end
-    end
-
-    describe "POST create" do
-      it "is not accessible to unregistered user" do
-        expect{post :create, wiki: {title: Faker::Hacker.say_something_smart, body: Faker::Hipster.paragraph, private: false}}.to raise_error(UncaughtThrowError)
-      end
-    end
-
-    describe "GET edit" do
-      it "is not accessible to unregistered user" do
-        expect{get :edit, id: wiki.id}.to raise_error(UncaughtThrowError)
-      end
-    end
-
-    describe "PUT update" do
-      it "is not accessible to unregistered user" do
-        expect{put :update, id: wiki.id, wiki: {title: Faker::Hacker.say_something_smart, body: Faker::Hipster.paragraph, private: false}}.to raise_error(UncaughtThrowError)
-      end
-    end
-
-    describe "DELETE destroy" do
-      it "is not accessible to unregistered user" do
-        expect{delete :destroy, id: wiki.id}.to raise_error(UncaughtThrowError)
-      end
-    end
-  end
-
-  context "standard user" do
-    before do
-      sign_in user
-    end
-
+  shared_examples_for User do
     describe "GET show" do
       it "returns http success" do
         get :show, {id: wiki.id}
@@ -200,7 +148,81 @@ RSpec.describe WikisController, type: :controller do
         delete :destroy, id: wiki.id
         expect(response).to redirect_to(wikis_path)
       end
+    end
+  end
 
+  context "guest" do
+    before do
+      sign_out user
+    end
+
+    describe "GET show" do
+      it "is not accessible to unregistered user" do
+        expect{get :show, {id: wiki.id}}.to raise_error(UncaughtThrowError)
+      end
+    end
+
+    describe "GET index" do
+      it "is not accessible to unregistered user" do
+        expect{get :index}.to raise_error(UncaughtThrowError)
+      end
+    end
+
+    describe "GET new" do
+      it "is not accessible to unregistered user" do
+        expect{get :new}.to raise_error(UncaughtThrowError)
+      end
+    end
+
+    describe "POST create" do
+      it "is not accessible to unregistered user" do
+        expect{post :create, wiki: {title: Faker::Hacker.say_something_smart, body: Faker::Hipster.paragraph, private: false}}.to raise_error(UncaughtThrowError)
+      end
+    end
+
+    describe "GET edit" do
+      it "is not accessible to unregistered user" do
+        expect{get :edit, id: wiki.id}.to raise_error(UncaughtThrowError)
+      end
+    end
+
+    describe "PUT update" do
+      it "is not accessible to unregistered user" do
+        expect{put :update, id: wiki.id, wiki: {title: Faker::Hacker.say_something_smart, body: Faker::Hipster.paragraph, private: false}}.to raise_error(UncaughtThrowError)
+      end
+    end
+
+    describe "DELETE destroy" do
+      it "is not accessible to unregistered user" do
+        expect{delete :destroy, id: wiki.id}.to raise_error(UncaughtThrowError)
+      end
+    end
+  end
+
+  context "standard user" do
+    before do
+      sign_in user
+    end
+
+    it_behaves_like User
+
+    describe "DELETE destroy" do
+      it "cannot delete wiki it didn't create" do
+        delete :destroy, id: other_wiki.id
+        expect(Wiki.where({id: other_wiki.id}).size).to eq(1)
+      end
+    end
+  end
+
+  context "premium user" do
+    before do
+      user.premium!
+      sign_in user
+    end
+
+    it_behaves_like User
+
+    describe "DELETE destroy" do
       it "cannot delete wiki it didn't create" do
         delete :destroy, id: other_wiki.id
         expect(Wiki.where({id: other_wiki.id}).size).to eq(1)
@@ -213,6 +235,8 @@ RSpec.describe WikisController, type: :controller do
       user.admin!
       sign_in user
     end
+
+    it_behaves_like User
 
     describe "DELETE destroy" do
       it "deletes a wiki owned by anyone" do
