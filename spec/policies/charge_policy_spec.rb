@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ChargesPolicy do
+RSpec.describe ChargePolicy do
   let(:premium) { create(:user, role: :premium) }
   let(:admin) { create(:user, role: :admin) }
   let(:standard) { create(:user) }

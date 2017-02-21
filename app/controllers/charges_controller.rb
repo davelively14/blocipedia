@@ -1,6 +1,6 @@
 class ChargesController < ApplicationController
   def new
-    authorize :charges
+    authorize :charge
     @stripe_btn_data = {
       key: "#{Rails.configuration.stripe[:publishable_key]}",
       description: "BigMoney Membership - #{current_user.username}",
@@ -9,7 +9,7 @@ class ChargesController < ApplicationController
   end
 
   def create
-    authorize :charges
+    authorize :charge
     customer = Stripe::Customer.create(
     email: current_user.email,
     card: params[:stripeToken]
@@ -32,7 +32,7 @@ class ChargesController < ApplicationController
   end
 
   def destroy
-    authorize :charges
+    authorize :charge
     current_user.standard!
     redirect_to wikis_path
   end

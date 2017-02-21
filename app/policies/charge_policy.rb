@@ -1,4 +1,4 @@
-class ChargesPolicy < ApplicationPolicy
+class ChargePolicy < ApplicationPolicy
   def new?
     user.present? ? user.standard? : false
   end
