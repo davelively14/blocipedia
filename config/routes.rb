@@ -3,5 +3,5 @@ Rails.application.routes.draw do
   root 'welcome#index'
 
   resources :wikis
-  resources :charges, only: [:new, :create]
+  resources :charges, only: [:new, :create, :destroy]
 end

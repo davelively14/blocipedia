@@ -3,8 +3,7 @@ class ChargesController < ApplicationController
     @stripe_btn_data = {
       key: "#{Rails.configuration.stripe[:publishable_key]}",
       description: "BigMoney Membership - #{current_user.username}",
-      # amount: ChargesController::Amount.default
-      amount: 1500
+      amount: amount
     }
   end
 
@@ -16,8 +15,7 @@ class ChargesController < ApplicationController
 
     Stripe::Charge.create(
     customer: customer.id,
-    # amount: ChargesController::Amount.default,
-    amount: 1500,
+    amount: amount,
     description: "BigMoney Membership - #{current_user.username}",
     currency: 'usd'
     )
@@ -31,9 +29,20 @@ class ChargesController < ApplicationController
       redirect_to new_charge_path
   end
 
-  class Amount
-    def default
-      1000
+  def destroy
+    current_user.standard!
+  end
+
+  private
+
+  def amount(terms=nil)
+    case terms
+    when :half_off
+      return 750
+    when :standard_sale
+      return 1000
+    else
+      return 1500
     end
   end
 end
