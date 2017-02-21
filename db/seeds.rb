@@ -28,6 +28,13 @@ User.create!(
   role: :admin
 )
 
+User.create!(
+  email: "normal@resurgens.io",
+  username: "normal",
+  password: "password",
+  password_confirmation: "password"
+)
+
 puts "Seed complete"
 puts "#{User.count} created"
 puts "#{Wiki.count} created"

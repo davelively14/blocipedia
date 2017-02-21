@@ -3,7 +3,9 @@ require 'rails_helper'
 
 RSpec.describe WikisController, type: :controller do
   let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
   let(:wiki) { create(:wiki, user: user) }
+  let(:other_wiki) { create(:wiki) }
 
   context "guest" do
     before do
@@ -53,7 +55,7 @@ RSpec.describe WikisController, type: :controller do
     end
   end
 
-  context "user" do
+  context "standard user" do
     before do
       sign_in user
     end
@@ -146,6 +148,11 @@ RSpec.describe WikisController, type: :controller do
         expect(wiki_instance.private).to eq(wiki.private)
         expect(wiki_instance.user_id).to eq(wiki.user_id)
       end
+
+      it "can edit a wiki from another user" do
+        get :edit, id: other_wiki.id
+        expect(response).to render_template(:edit)
+      end
     end
 
     describe "PUT update" do
@@ -163,6 +170,20 @@ RSpec.describe WikisController, type: :controller do
         expect(updated_wiki.private).to eq(new_private)
       end
 
+      it "can update a wiki from another user" do
+        new_title = Faker::Hacker.say_something_smart
+        new_body = Faker::Hipster.paragraph
+        new_private = false
+
+        put :update, id: other_wiki.id, wiki: {title: new_title, body: new_body, private: new_private}
+        updated_wiki = assigns(:wiki)
+
+        expect(updated_wiki.id).to eq(other_wiki.id)
+        expect(updated_wiki.title).to eq(new_title)
+        expect(updated_wiki.body).to eq(new_body)
+        expect(updated_wiki.private).to eq(new_private)
+      end
+
       it "redirects to the updated wiki" do
         put :update, id: wiki.id, wiki: {title: Faker::Hacker.say_something_smart, body: Faker::Hipster.paragraph, private: false}
         expect(response).to redirect_to(wiki)
@@ -170,14 +191,33 @@ RSpec.describe WikisController, type: :controller do
     end
 
     describe "DELETE destroy" do
-      it "deletes the wiki" do
+      it "deletes a wiki owned by user" do
         delete :destroy, id: wiki.id
         expect(Wiki.where({id: wiki.id}).size).to eq(0)
       end
 
-      it "redirects to wiki#index" do
+      it "redirects to wiki#index after deletion" do
         delete :destroy, id: wiki.id
         expect(response).to redirect_to(wikis_path)
+      end
+
+      it "cannot delete wiki it didn't create" do
+        delete :destroy, id: other_wiki.id
+        expect(Wiki.where({id: other_wiki.id}).size).to eq(1)
+      end
+    end
+  end
+
+  context "admin user" do
+    before do
+      user.admin!
+      sign_in user
+    end
+
+    describe "DELETE destroy" do
+      it "deletes a wiki owned by anyone" do
+        delete :destroy, id: other_wiki.id
+        expect(Wiki.where({id: other_wiki.id}).size).to eq(0)
       end
     end
   end
