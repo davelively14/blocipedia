@@ -212,6 +212,14 @@ RSpec.describe WikisController, type: :controller do
         expect(Wiki.where({id: other_wiki.id}).size).to eq(1)
       end
     end
+
+    describe "privacy" do
+      let(:wiki_private) { create(:wiki, user: user, private: true) }
+
+      it "should not let standard users create private wikis" do
+        expect(wiki_private.private).to be_falsey
+      end
+    end
   end
 
   context "premium user" do
@@ -228,6 +236,14 @@ RSpec.describe WikisController, type: :controller do
         expect(Wiki.where({id: other_wiki.id}).size).to eq(1)
       end
     end
+
+    describe "privacy" do
+      let(:wiki_private) { create(:wiki, user: user, private: true) }
+
+      it "should let premium users create private wikis" do
+        expect(wiki_private.private).to be_truthy
+      end
+    end
   end
 
   context "admin user" do
@@ -242,6 +258,14 @@ RSpec.describe WikisController, type: :controller do
       it "deletes a wiki owned by anyone" do
         delete :destroy, id: other_wiki.id
         expect(Wiki.where({id: other_wiki.id}).size).to eq(0)
+      end
+    end
+
+    describe "privacy" do
+      let(:wiki_private) { create(:wiki, user: user, private: true) }
+
+      it "should let admin users create private wikis" do
+        expect(wiki_private.private).to be_truthy
       end
     end
   end
