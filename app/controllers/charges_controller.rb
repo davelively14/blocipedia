@@ -33,7 +33,12 @@ class ChargesController < ApplicationController
 
   def destroy
     authorize :charge
-    current_user.standard!
+    @user = User.find(params[:id])
+    @user.standard!
+    @user.wikis.each do |wiki|
+      wiki.confirm_private_valid
+    end
+    flash[:notice] = "Downgraded account to standard"
     redirect_to wikis_path
   end
 
