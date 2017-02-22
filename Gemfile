@@ -22,6 +22,7 @@ gem 'bootstrap-sass'
 gem 'devise', '~> 4.1.0'
 gem 'pundit'
 gem 'stripe'
+gem 'redcarpet'
 
 group :development do
   gem 'web-console', '~> 2.0'

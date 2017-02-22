@@ -14,7 +14,7 @@ users = User.all
 20.times do
   Wiki.create!(
     title: Faker::Hacker.say_something_smart,
-    body: Faker::Hipster.paragraph,
+    body: "### Section 1\n#{Faker::Hipster.paragraph}\n#### Sub A\n#{Faker::Hipster.paragraph}\n> #{Faker::StarWars.quote}\n- #{Faker::StarWars.character}\n\n### Section 2\n#{Faker::Hipster.paragraph}",
     private: false,
     user: users.sample
   )

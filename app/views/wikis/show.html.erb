@@ -2,7 +2,7 @@
 <div class="row">
   <div class="container">
     <div class="col-md-8">
-      <%= @wiki.body %>
+      <%= markdown(@wiki.body) %>
     </div>
     <div class="col-md-4">
       <h4>by <%= @wiki.user.username %></h4>
