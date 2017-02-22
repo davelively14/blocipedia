@@ -5,6 +5,8 @@ RSpec.describe User, type: :model do
 
   # Shoulda test for associations
   it { is_expected.to have_many(:wikis) }
+  it { is_expected.to have_many(:collaborating_on).through(:collaborators).source(:wiki) }
+  it { is_expected.to have_many(:collaborators) }
 
   # Shoulda test for emails
   it { is_expected.to validate_presence_of(:email) }

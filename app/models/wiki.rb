@@ -1,5 +1,7 @@
 class Wiki < ActiveRecord::Base
   belongs_to :user
+  has_many :collaborators
+  has_many :collaborating_users, through: :collaborators, source: :user
   after_save :confirm_private_valid
 
   validates :title, presence: true, length: { minimum: 5 }

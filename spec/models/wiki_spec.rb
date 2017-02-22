@@ -6,6 +6,8 @@ RSpec.describe Wiki, type: :model do
 
   # Shoulda tests for associations
   it { is_expected.to belong_to(:user) }
+  it { is_expected.to have_many(:collaborators) }
+  it { is_expected.to have_many(:collaborating_users).through(:collaborators).source(:user) }
 
   # Shoulda tests for title
   it { is_expected.to validate_presence_of(:title) }
