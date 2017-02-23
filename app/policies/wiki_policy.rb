@@ -4,7 +4,7 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def show?
-    scope.where(:id => record.id).exists?
+    scope.where(:id => record.id).exists? && is_authorized_to_view_private?(record)
   end
 
   def create?
@@ -16,7 +16,7 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def update?
-    user.present?
+    user.present? && is_authorized_to_view_private?(record)
   end
 
   def edit?
@@ -29,5 +29,9 @@ class WikiPolicy < ApplicationPolicy
     else
       false
     end
+  end
+
+  def is_authorized_to_view_private?(record)
+    !record.private || user == record.user || record.collaborating_users.include?(user) || user.admin?
   end
 end
