@@ -36,7 +36,8 @@ RSpec.describe WikisController, type: :controller do
         expect(response).to render_template(:index)
       end
 
-      it "assigns all wikis to @wiki" do
+      it "assigns public wikis to @wiki" do
+        wiki = create(:wiki)
         get :index
         expect(assigns(:wikis)).to eq([wiki])
       end

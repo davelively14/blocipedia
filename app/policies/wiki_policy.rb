@@ -4,7 +4,7 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def show?
-    scope.where(:id => record.id).exists? && is_authorized_to_view_private?(record)
+    is_authorized_to_view_private?(record, user)
   end
 
   def create?
@@ -16,22 +16,39 @@ class WikiPolicy < ApplicationPolicy
   end
 
   def update?
-    user.present? && is_authorized_to_view_private?(record)
+    user.present? && is_authorized_to_view_private?(record, user)
   end
 
   def edit?
-    update? && scope.where(:id => record.id).exists?
+    update?
   end
 
   def destroy?
-    if user.present? && scope.where(:id => record.id).exists?
+    if user.present?
       user.admin? || (record.user.id == user.id)
     else
       false
     end
   end
 
-  def is_authorized_to_view_private?(record)
-    !record.private || user == record.user || record.collaborating_users.include?(user) || user.admin?
+  class Scope < Scope
+    def resolve
+      if user.admin?
+        return scope.all
+      else
+        wikis = []
+        scope.all.each do |wiki|
+          if !wiki.private || wiki.collaborating_users.include?(user) || user == wiki.user || user.admin?
+            wikis << wiki
+          end
+        end
+      end
+
+      wikis
+    end
+  end
+
+  def is_authorized_to_view_private?(record, user)
+    !record.private || record.collaborating_users.include?(user) || user == record.user || user.admin?
   end
 end
