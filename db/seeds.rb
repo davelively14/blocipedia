@@ -11,12 +11,30 @@ end
 
 users = User.all
 
+10.times do
+  Wiki.create!(
+  title: Faker::Hacker.say_something_smart,
+  body: "### Section 1\n#{Faker::Hipster.paragraph}\n#### Sub A\n#{Faker::Hipster.paragraph}\n> #{Faker::StarWars.quote}\n- #{Faker::StarWars.character}\n\n### Section 2\n#{Faker::Hipster.paragraph}",
+  private: true,
+  user: users.sample
+  )
+end
+
+private_wikis = Wiki.all
+
 20.times do
   Wiki.create!(
     title: Faker::Hacker.say_something_smart,
     body: "### Section 1\n#{Faker::Hipster.paragraph}\n#### Sub A\n#{Faker::Hipster.paragraph}\n> #{Faker::StarWars.quote}\n- #{Faker::StarWars.character}\n\n### Section 2\n#{Faker::Hipster.paragraph}",
     private: false,
     user: users.sample
+  )
+end
+
+30.times do
+  Collaborator.create!(
+    user: users.sample,
+    wiki: private_wikis.sample
   )
 end
 
@@ -35,6 +53,12 @@ User.create!(
   password_confirmation: "password"
 )
 
+Collaborator.create!(
+  user: User.last,
+  wiki: private_wikis.sample
+)
+
 puts "Seed complete"
-puts "#{User.count} created"
-puts "#{Wiki.count} created"
+puts "#{User.count} users created"
+puts "#{Wiki.count} wikis created"
+puts "#{Collaborator.count} collaborators created"

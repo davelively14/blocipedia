@@ -21,7 +21,12 @@
         <% @wikis.each do |wiki| %>
           <% if is_authorized_to_view?(wiki) %>
             <tr>
-              <td><%= link_to wiki.title, wiki %></td>
+              <td>
+                <%= link_to wiki.title, wiki %>
+                <% if wiki.private %>
+                  <b>Private!</b>
+                <% end %>
+              </td>
               <td>
                 <%= link_to "Edit", edit_wiki_path(wiki), class: 'btn btn-primary btn-xs' %>
                 <% if policy(wiki).destroy? %>

@@ -4,6 +4,6 @@ module WikisHelper
   end
 
   def is_authorized_to_view?(wiki)
-    !wiki.private || current_user == wiki.user || current_user.admin?
+    !wiki.private || current_user == wiki.user || wiki.collaborating_users.include?(current_user) || current_user.admin?
   end
 end
