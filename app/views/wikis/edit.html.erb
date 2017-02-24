@@ -7,16 +7,16 @@
   <div class="col-md-4">
     <% if @wiki.private %>
       <h4>Collaborators</h4>
+      <ul>
       <% @collaborators.each do |collaborator| %>
-        <ul>
           <li>
             <%= user_info(collaborator.user_id).username %>
             <% if is_authorized_to_adjust_collaborators?(@wiki) %>
               - <%= link_to "Remove", collaborator_path(collaborator), method: :delete, class: 'btn btn-danger btn-xs' %>
             <% end %>
            </li>
-        </ul>
       <% end %>
+      </ul>
       <br>
       <% if @users.count > 0 && is_authorized_to_adjust_collaborators?(@wiki) %>
         <h5>Add more collaborators: </h5>
