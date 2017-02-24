@@ -12,5 +12,5 @@ class User < ActiveRecord::Base
   enum role: [:standard, :premium, :admin]
 
   validates :email, length: { minimum: 3 }
-  validates :username, presence: true, length: { minimum: 1, maximum: 20 }, uniqueness: true
+  validates :username, presence: true, length: { minimum: 1, maximum: 30 }, uniqueness: true
 end

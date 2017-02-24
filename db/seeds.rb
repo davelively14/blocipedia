@@ -58,6 +58,20 @@ Collaborator.create!(
   wiki: private_wikis.sample
 )
 
+User.create!(
+  email: "premium@resurgens.io",
+  username: "premium",
+  password: "password",
+  password_confirmation: "password"
+)
+
+Wiki.create!(
+  title: Faker::Hacker.say_something_smart,
+  body: "### Section 1\n#{Faker::Hipster.paragraph}\n#### Sub A\n#{Faker::Hipster.paragraph}\n> #{Faker::StarWars.quote}\n- #{Faker::StarWars.character}\n\n### Section 2\n#{Faker::Hipster.paragraph}",
+  private: true,
+  user: User.last
+)
+
 puts "Seed complete"
 puts "#{User.count} users created"
 puts "#{Wiki.count} wikis created"

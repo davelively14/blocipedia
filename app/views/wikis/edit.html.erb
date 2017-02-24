@@ -1,7 +1,18 @@
 <h2>Edit</h2>
 
 <div class="row">
-  <div class="container">
+  <div class="col-md-8">
     <%= render partial: 'form', locals: {wiki: @wiki} %>
+  </div>
+  <div class="col-md-4">
+    <h4>Collaborators</h4>
+    <% @collaborators.each do |user| %>
+      <ul>
+        <li><%= user.username %></li>
+      </ul>
+    <% end %>
+    <br>
+    <h5>Add more collaborators: </h5>
+    
   </div>
 </div>

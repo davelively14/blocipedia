@@ -1,3 +1,8 @@
 == Blocopedia
 
 My Bloc app that allows users to create their own Wikis.
+
+## TODO
+
+- Need to fix editing private wiki
+  - Non-owners should not be able to change whether it's private or not.
