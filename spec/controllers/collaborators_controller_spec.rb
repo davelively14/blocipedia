@@ -22,7 +22,7 @@ RSpec.describe CollaboratorsController, type: :controller do
 
       it "redirects to :back" do
         post :create, collaborator: {wiki_id: wiki.id, user_id: standard.id}
-        expect(response).to redirect_to(wiki_path(wiki))
+        expect(response).to redirect_to(edit_wiki_path(wiki))
       end
     end
 
@@ -34,7 +34,7 @@ RSpec.describe CollaboratorsController, type: :controller do
 
       it "redirects to show wiki" do
         delete :destroy, id: collaborator.id
-        expect(response).to redirect_to(wiki_path(wiki))
+        expect(response).to redirect_to(edit_wiki_path(wiki))
       end
     end
   end
@@ -42,7 +42,7 @@ RSpec.describe CollaboratorsController, type: :controller do
   context "owner" do
     before do
       sign_in owner
-      request.env["HTTP_REFERER"] = wiki_path(wiki)
+      request.env["HTTP_REFERER"] = edit_wiki_path(wiki)
     end
 
     it_behaves_like Collaborator
@@ -51,7 +51,7 @@ RSpec.describe CollaboratorsController, type: :controller do
   context "admin" do
     before do
       sign_in admin
-      request.env["HTTP_REFERER"] = wiki_path(wiki)
+      request.env["HTTP_REFERER"] = edit_wiki_path(wiki)
     end
 
     it_behaves_like Collaborator
@@ -60,7 +60,7 @@ RSpec.describe CollaboratorsController, type: :controller do
   context "standard" do
     before do
       sign_in standard
-      request.env["HTTP_REFERER"] = wiki_path(wiki)
+      request.env["HTTP_REFERER"] = edit_wiki_path(wiki)
     end
 
     describe "POST create" do
