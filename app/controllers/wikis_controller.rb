@@ -33,7 +33,9 @@ class WikisController < ApplicationController
   def edit
     @wiki = Wiki.find(params[:id])
     authorize @wiki
-    @collaborators = @wiki.collaborating_users
+    @collaborators = @wiki.collaborators
+    @collaborator = Collaborator.new
+    @users = non_collaborating_users(@wiki)
   end
 
   def update
@@ -67,5 +69,14 @@ class WikisController < ApplicationController
 
   def wiki_params
     params.require(:wiki).permit(:title, :body, :private)
+  end
+
+  def non_collaborating_users(wiki)
+    all_users = User.all
+    filtered_users = []
+    all_users.each do |user|
+      filtered_users << user unless (user == wiki.user || wiki.collaborating_users.include?(user))
+    end
+    filtered_users
   end
 end

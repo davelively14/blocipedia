@@ -98,6 +98,11 @@ RSpec.describe WikisController, type: :controller do
         expect(wiki_instance.user_id).to eq(wiki.user_id)
       end
 
+      it "assigns a new collaborator to @collaborator" do
+        get :edit, id: wiki.id
+        expect(assigns(:collaborator)).to_not be_nil
+      end
+
       it "can edit a wiki from another user" do
         get :edit, id: other_wiki.id
         expect(response).to render_template(:edit)

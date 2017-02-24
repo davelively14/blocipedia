@@ -5,14 +5,35 @@
     <%= render partial: 'form', locals: {wiki: @wiki} %>
   </div>
   <div class="col-md-4">
-    <h4>Collaborators</h4>
-    <% @collaborators.each do |user| %>
-      <ul>
-        <li><%= user.username %></li>
-      </ul>
+    <% if @wiki.private %>
+      <h4>Collaborators</h4>
+      <% @collaborators.each do |collaborator| %>
+        <ul>
+          <li>
+            <%= user_info(collaborator.user_id).username %>
+            <% if is_authorized_to_adjust_collaborators?(@wiki) %>
+              - <%= link_to "Remove", collaborator_path(collaborator), method: :delete, class: 'btn btn-danger btn-xs' %>
+            <% end %>
+           </li>
+        </ul>
+      <% end %>
+      <br>
+      <% if @users.count > 0 && is_authorized_to_adjust_collaborators?(@wiki) %>
+        <h5>Add more collaborators: </h5>
+        <%= form_for @collaborator do |f| %>
+          <div class="form-group">
+            <%= f.select :user_id, [], {}, {class: 'form-control'} do  %>
+              <% @users.each do |user| %>
+                <%= content_tag :option, user.username, value: user.id %>
+              <% end %>
+            <% end %>
+          </div>
+          <%= f.text_field 'wiki_id', value: @wiki.id, hidden: true %>
+          <div class="form-group">
+            <%= f.submit "Add User", class: "btn btn-success btn-sm" %>
+          </div>
+        <% end %>
+      <% end %>
     <% end %>
-    <br>
-    <h5>Add more collaborators: </h5>
-    
   </div>
 </div>
