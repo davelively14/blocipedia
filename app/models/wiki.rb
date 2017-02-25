@@ -4,6 +4,9 @@ class Wiki < ActiveRecord::Base
   has_many :collaborating_users, through: :collaborators, source: :user
   after_save :confirm_private_valid
 
+  extend FriendlyId
+  friendly_id :title, use: :slugged
+
   validates :title, presence: true, length: { minimum: 5 }
   validates :body, presence: true, length: { minimum: 20 }
 
