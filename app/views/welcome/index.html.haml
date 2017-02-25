@@ -1,0 +1,39 @@
+%br/
+.container
+  %h1.text-center Blocipedia: Social, Markdown Wiki
+  %br/
+  - if !current_user
+    .row
+      .col-md-2
+      .col-md-8
+        .jumbotron
+          %h3.text-center Create and share Markdown Wikis
+          %br/
+          .col-md-6.text-right
+            = link_to "Sign Up", new_user_registration_path, class: 'btn btn-primary'
+          .col-md-6.text-left
+            = link_to "Sign In", new_user_session_path, class: 'btn btn-primary'
+          %br/
+    .row
+      .col-md-6.text-center
+        %h2 Free Plan
+        %p.lead= Faker::Hipster.sentence
+      .col-md-6.text-center
+        %h2 Premium Plan
+        %p.lead= Faker::Hipster.sentence
+  - else
+    .row
+      .col-md-2
+      .col-md-8
+        .jumbotron
+          %h3.text-center Create and share Markdown Wikis
+          %br/
+          %br/
+          .text-center
+            = link_to "Go to Wikis", wikis_path, class: 'btn btn-primary btn-lg'
+    - if current_user.standard?
+      .row
+        .col-md-3
+        .col-md-6.text-center
+          %h2= link_to "Upgrade to Premium today!", new_charge_path
+          %p.lead= Faker::Hipster.sentences(2).join(" ")

@@ -1,0 +1,14 @@
+= form_for wiki do |f|
+  .form-group
+    = f.label :title
+    = f.text_field :title, class: 'form-control', placeholder: "Enter Wiki title", autofocus: true
+  .form-group
+    = f.label :body
+    = f.text_area :body, rows: 12, class: 'form-control', placeholder: "Enter Wiki body"
+  - if is_authorized_to_make_private?
+    .form-group
+      = f.label :private, class: 'checkbox' do
+        Private wiki         #{f.check_box :private}
+  .form-group
+    = f.submit "Save", class: 'btn btn-success'
+    = link_to "Cancel", cancel_path, class: 'btn btn-primary'

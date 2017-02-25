@@ -1,0 +1,28 @@
+.row
+  .col-sm-4
+    %h2 All Wikis
+    = link_to "New Wiki", new_wiki_path, class: 'btn btn-success btn-sm'
+  - if current_user.standard?
+    .col-sm-8.text-center
+      %h4= link_to "Upgrade to Premium", new_charge_path
+      %p.lead
+        %small Post privately today.
+.row
+  .container
+    %table.table.table-hover
+      %thead
+        %td{:width => "70%"}
+          %h4 Wiki Title
+        %td{:width => "30%"}
+          %h4 Actions
+      %tbody
+        - @wikis.each do |wiki|
+          %tr
+            %td
+              = link_to wiki.title, wiki
+              - if wiki.private
+                %b Private!
+            %td
+              = link_to "Edit", edit_wiki_path(wiki), class: 'btn btn-primary btn-xs'
+              - if policy(wiki).destroy?
+                = link_to "Delete", wiki_path(wiki), method: :delete, class: 'btn btn-danger btn-xs', data: {confirm: "Are you sure you want to delete this wiki?"}
