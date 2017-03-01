@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'Authentication' do
-  let(:email) { 'new_user@bloc.com' }
+  let(:email) { 'new_user@bloc.io' }
   let(:password) { 'password' }
   let(:username) { 'new_user' }
 

@@ -24,7 +24,6 @@ gem 'pundit'
 gem 'stripe'
 gem 'redcarpet'
 gem 'friendly_id', '~> 5.1.0'
-gem 'capybara'
 
 group :development do
   gem 'web-console', '~> 2.0'
@@ -37,4 +36,5 @@ group :development, :test do
   gem 'shoulda'
   gem 'faker'
   gem 'factory_girl_rails'
+  gem 'capybara'
 end
