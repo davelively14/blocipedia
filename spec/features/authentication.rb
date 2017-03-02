@@ -34,4 +34,15 @@ feature 'Authentication' do
     expect(current_path).to eq(wikis_path)
     expect(page).to have_content('Signed in successfully.')
   end
+
+  scenario "signed in user can sign out" do
+    visit(new_user_session_path)
+    fill_in 'Email', with: email
+    fill_in 'Password', with: password
+    click_on 'Log in'
+    expect(page).to have_content(username)
+    click_on 'Sign Out'
+    expect(current_path).to eq(root_path)
+    expect(page).to have_content("Signed out successfully.")
+  end
 end
